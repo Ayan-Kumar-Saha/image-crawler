@@ -5,7 +5,6 @@ from selenium.webdriver.common.keys import Keys
 import requests
 import os
 
-
 image_name = input('Enter the image subject you want to download: ')
 image_count= int(input('Number of images you want to download: '))
 
@@ -44,13 +43,20 @@ while no_of_pagedowns:
 image_elements = browser.find_elements_by_css_selector('div ._2zEKz')
 
 
-os.mkdir('images')
+i = None
+files_count = 0
 
-i = 1
+if not os.path.exists('images'):
+    os.mkdir('images')
+    i = 1
+else:
+    files_count = len(os.listdir('images'))
+    
+i = files_count + 1
 
 for image_element in image_elements:
 
-    if i <= image_count:
+    if i <= image_count + files_count:
 
         image_name = image_element.get_attribute('alt')
 
@@ -84,3 +90,4 @@ for image_element in image_elements:
 browser.quit()
 
 print('Images successfully downloaded! Please check ./images folder!')
+
